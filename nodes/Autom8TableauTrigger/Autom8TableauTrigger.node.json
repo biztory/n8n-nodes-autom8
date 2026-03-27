@@ -1,0 +1,14 @@
+{
+	"node": "n8n-nodes-autom8-tableau",
+	"nodeVersion": "1.0",
+	"codexVersion": "1.0",
+	"categories": ["Miscellaneous"],
+	"resources": {
+		"credentialDocumentation": [],
+		"primaryDocumentation": [
+			{
+				"url": "https://github.com/biztory/n8n-nodes-autom8?tab=readme-ov-file"
+			}
+		]
+	}
+}
