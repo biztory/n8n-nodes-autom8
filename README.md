@@ -2,9 +2,9 @@
 
 This is an n8n community node. It lets you use Biztory's **Autom8** Tableau Extensions in your n8n workflows.
 
-⚠️ To do: add link to our docs or page.
-
 With Autom8, Tableau dashboards can be made actionable seamlessly. Add the Tableau Extension to your dashboard, wire it up with this n8n node, and you're ready to use your dashboard's data in n8n however you wish! There are no limits to how it can be used as of then.
+
+ℹ️ This README contains the primary information needed to work with the Autom8 node. It complements the [full documentation](https://biztory.atlassian.net/wiki/spaces/A8/pages/1123254273/n8n+Node).
 
 [n8n](https://n8n.io/) is a [fair-code licensed](https://docs.n8n.io/reference/license/) workflow automation platform.
 
@@ -40,5 +40,5 @@ _New to n8n? [Try it out](https://docs.n8n.io/try-it-out/) to get started and le
 ## Resources
 
 * [n8n community nodes documentation](https://docs.n8n.io/integrations/#community-nodes)
-* ⚠️ To do: add link to our docs or page.
+* [Full documentation](https://biztory.atlassian.net/wiki/spaces/A8/pages/1123254273/n8n+Node)
 * ⚠️ To do: add link to the Extension on the Tableau Exchange.
