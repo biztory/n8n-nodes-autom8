@@ -1,18 +1,15 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 60">
-  <!-- Background pill -->
-  <rect width="60" height="60" rx="12" fill="#1A1A2E"/>
-  <!-- "A8" wordmark -->
-  <text
-    x="50%"
-    y="54%"
-    dominant-baseline="middle"
-    text-anchor="middle"
-    font-family="'Arial Black', Arial, sans-serif"
-    font-weight="900"
-    font-size="22"
-    fill="#00C2FF"
-    letter-spacing="-1"
-  >A8</text>
-  <!-- Accent underline -->
-  <rect x="12" y="44" width="36" height="3" rx="1.5" fill="#00C2FF" opacity="0.5"/>
+<svg version="1.2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+	<defs>
+		<linearGradient id="g1" x2="1" gradientUnits="userSpaceOnUse" gradientTransform="matrix(0,-512,512,0,256,512)">
+			<stop offset="0" stop-color="#001038"/>
+			<stop offset="1" stop-color="#142a62"/>
+		</linearGradient>
+	</defs>
+	<style>
+		.s0 { fill: url(#g1) } 
+		.s1 { fill: #cddcff } 
+	</style>
+	<path id="Layer 1" fill-rule="evenodd" class="s0" d="m50 0h412c27.61 0 50 22.39 50 50v412c0 27.61-22.39 50-50 50h-412c-27.61 0-50-22.39-50-50v-412c0-27.61 22.39-50 50-50z"/>
+	<path id="A8" class="s1" aria-label="A8"  d="m120.4 354h-25.2l59.4-196h44.2l59.4 196h-25.2l-14.3-48.7h-84zm54.6-185.9l-33.9 115.3h71.1l-33.9-115.3zm175.2 189.8h-5q-19.6 0-34.4-7-14.9-7-23-19-8.1-12.1-8.1-27.2v-3.4q0-13.4 5.3-22.9 5.3-9.8 13.4-15.7 8.4-6.2 17.7-8.7v-3.3q-12.6-4.2-22.1-15.2-9.3-10.9-9.3-27.1v-3.4q0-14.8 7.9-26.3 7.8-11.5 21.8-17.9 14-6.7 32.5-6.7h1.7q18.4 0 32.4 6.7 14 6.4 21.9 17.9 7.8 11.5 7.8 26.3v3.4q0 16.2-9.5 27.1-9.2 11-21.8 15.2v3.3q9.2 2.5 17.3 8.7 8.4 5.9 13.7 15.7 5.4 9.5 5.4 22.9v3.4q0 15.1-8.2 27.2-8.1 12-22.9 19-14.6 7-34.5 7zm-2.5-116.5q17.4 0 28.3-9.2 11.2-9.5 11.2-23.3v-1.6q0-14.3-10.9-23-10.7-9-28.6-9-17.9 0-28.8 9-10.7 8.7-10.7 23v1.6q0 13.8 11 23.3 11.2 9.2 28.5 9.2zm-1.7 95.2h3.4q19 0 30.8-9.8 12-10.1 12-25.5v-1.6q0-17.4-12.3-26.9-12-9.5-31.3-9.5h-1.7q-19.3 0-31.7 9.5-12 9.5-12 26.9v1.6q0 15.4 12 25.5 12.1 9.8 30.8 9.8z"/>
+	<path id="Shape 1" fill-rule="evenodd" class="s1" d="m95.54 388.63v-4.99h319.46v4.99z"/>
 </svg>

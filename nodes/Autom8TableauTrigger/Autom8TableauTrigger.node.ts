@@ -45,7 +45,7 @@ interface TableauPayload {
     timestamp?: string;
     user?: string;
   };
-  data: Record<string, TableauRow[]>;
+  data: TableauRow[];
   additional_data?: {
     [key: string]: unknown;
   };
@@ -177,14 +177,6 @@ export class Autom8TableauTrigger implements INodeType {
         default: {},
         options: [
           {
-            displayName: 'Skip Empty Worksheets',
-            name: 'skipEmpty',
-            type: 'boolean',
-            default: true,
-            description:
-              'Whether to silently drop worksheets that contain no rows.',
-          },
-          {
             displayName: 'Pass Through Raw Body',
             name: 'passThroughRaw',
             type: 'boolean',
@@ -202,18 +194,16 @@ export class Autom8TableauTrigger implements INodeType {
     const req = this.getRequestObject();
     const responseMode = this.getNodeParameter('responseMode', 'onReceived') as string;
     const options = this.getNodeParameter('options', {}) as {
-      skipEmpty?: boolean;
       passThroughRaw?: boolean;
     };
- 
-    const skipEmpty = options.skipEmpty !== false;
+
     const passThroughRaw = options.passThroughRaw === true;
  
     // ── 1. Parse & validate the incoming body ──────────────────────────────
     let payload: TableauPayload;
     try {
       payload = req.body as TableauPayload;
-      if (!payload || typeof payload.data !== 'object') {
+      if (!payload || typeof payload.data !== 'object' || payload.data === null) {
         throw new Error('Missing or invalid "data" key in request body.');
       }
     } catch (err) {
@@ -223,34 +213,34 @@ export class Autom8TableauTrigger implements INodeType {
       );
     }
  
-    const includeDiscountCode =
-      (payload.additional_data?.include_discount_code as string | undefined)?.toLowerCase() === 'yes';
- 
+    const additionalData: IDataObject = {};
+    for (const [key, value] of Object.entries(payload.additional_data ?? {})) {
+      additionalData[toSnakeCase(key)] = value as IDataObject;
+    }
+
     const rawBody = passThroughRaw ? (payload as unknown as IDataObject) : undefined;
  
-    // ── 2. Iterate worksheets ──────────────────────────────────────────────
+    // ── 2. Normalise & iterate rows ───────────────────────────────────────
+    // All payload formats (all-sheets, selected-marks, specific-sheet) send a
+    // flat TableauRow[] where each row includes a worksheet_name column.
+    const flatRows: TableauRow[] = payload.data;
+
     const outputItems: INodeExecutionData[] = [];
- 
-    for (const [worksheetName, worksheetRows] of Object.entries(payload.data)) {
-      if (!Array.isArray(worksheetRows)) continue;
-      if (skipEmpty && worksheetRows.length === 0) continue;
- 
-      for (const row of worksheetRows) {
-        const shaped: IDataObject = {};
- 
-        for (const [rawKey, value] of Object.entries(row)) {
-          shaped[toSnakeCase(rawKey)] = value as IDataObject;
-        }
- 
-        shaped['worksheet_name'] = toSnakeCase(worksheetName);
-        shaped['include_discount_code'] = includeDiscountCode;
- 
-        if (rawBody) {
-          shaped['_raw'] = rawBody;
-        }
- 
-        outputItems.push({ json: shaped });
+
+    for (const row of flatRows) {
+      const shaped: IDataObject = {};
+
+      for (const [rawKey, value] of Object.entries(row)) {
+        shaped[toSnakeCase(rawKey)] = value as IDataObject;
       }
+
+      Object.assign(shaped, additionalData);
+
+      if (rawBody) {
+        shaped['_raw'] = rawBody;
+      }
+
+      outputItems.push({ json: shaped });
     }
  
     // ── 3. Return the right shape depending on response mode ───────────────
