@@ -94,7 +94,7 @@ export class Autom8TableauTrigger implements INodeType {
         httpMethod: 'POST',
         isFullPath: true,
         responseMode: '={{$parameter["responseMode"]}}',
-        responseData: '={{$parameter["responseData"]}}',
+        responseData: 'firstEntryJson',
         path: '={{$parameter["path"]}}',
       },
     ],
@@ -144,61 +144,11 @@ export class Autom8TableauTrigger implements INodeType {
           {
             name: 'When Last Node Finishes',
             value: 'lastNode',
-            description: 'Returns data of the last-executed node. Use a single field `autom8_response` along with Response Data "First Entry JSON" to display a message in Tableau.',
+            description: 'Returns the JSON of the first entry of the last-executed node. Use a single field `autom8_response` to display a message in Tableau.',
           },
         ],
         default: 'onReceived',
         description: 'When and how to respond to the incoming Tableau request',
-      },
- 
-      // ── Response data — only shown when "When Last Node Finishes" ──────
-      {
-        displayName: 'Response Data',
-        name: 'responseData',
-        type: 'options',
-        displayOptions: {
-          show: {
-            responseMode: ['lastNode'],
-          },
-        },
-        options: [
-          {
-            name: 'All Entries',
-            value: 'allEntries',
-            description: 'Returns all entries of the last node as an array',
-          },
-          {
-            name: 'First Entry JSON',
-            value: 'firstEntryJson',
-            description: 'Returns the JSON data of the first entry of the last node',
-          },
-          {
-            name: 'First Entry Binary',
-            value: 'firstEntryBinary',
-            description: 'Returns the binary data of the first entry of the last node',
-          },
-          {
-            name: 'No Response Body',
-            value: 'noData',
-            description: 'Returns without a body',
-          },
-        ],
-        default: 'firstEntryJson',
-        description: 'What data the webhook should return',
-      },
- 
-      // ── Notice shown when using the Respond to Webhook node ───────────
-      {
-        displayName:
-          "Insert a 'Respond to Webhook' node into your workflow to control the response.",
-        name: 'webhookNotice',
-        type: 'notice',
-        displayOptions: {
-          show: {
-            responseMode: ['responseNode'],
-          },
-        },
-        default: '',
       },
  
       // ── Autom8-specific options ───────────────────────────────────────
@@ -233,7 +183,6 @@ export class Autom8TableauTrigger implements INodeType {
   // ── Webhook handler ──────────────────────────────────────────────────────
   async webhook(this: IWebhookFunctions): Promise<IWebhookResponseData> {
     const req = this.getRequestObject();
-    const responseMode = this.getNodeParameter('responseMode', 'onReceived') as string;
     const authentication = this.getNodeParameter('authentication', 'none') as string;
     const options = this.getNodeParameter('options', {}) as {
       includeMetadata?: boolean;
@@ -305,18 +254,9 @@ export class Autom8TableauTrigger implements INodeType {
       outputItems.push({ json: shaped });
     }
  
-    // ── 4. Return the right shape depending on response mode ───────────────
-    // - 'onReceived':   n8n replies immediately; workflowData triggers the workflow.
-    // - 'lastNode':     n8n waits for the workflow to finish, sends last node output.
-    // - 'responseNode': a downstream "Respond to Webhook" node sends the reply;
-    //                   noWebhookResponse: true prevents n8n from auto-responding.
-    if (responseMode === 'responseNode') {
-      return {
-        workflowData: [outputItems],
-        noWebhookResponse: true,
-      };
-    }
-    
+    // ── 4. Return workflow data ────────────────────────────────────────────
+    // - 'onReceived': n8n replies immediately; workflowData triggers the workflow.
+    // - 'lastNode':   n8n waits for the workflow to finish, returns first-entry JSON.
     return {
       workflowData: [outputItems],
     };
