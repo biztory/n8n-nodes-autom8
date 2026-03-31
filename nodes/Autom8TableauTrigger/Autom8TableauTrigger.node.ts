@@ -42,6 +42,7 @@ interface TableauRow {
 interface TableauPayload {
   metadata?: {
     dashboardName?: string;
+    dashboardId?: string;
     timestamp?: string;
     user?: string;
   };
@@ -59,11 +60,12 @@ export class Autom8TableauTrigger implements INodeType {
     // ── Identity ─────────────────────────────────────────────────────────
     displayName: 'Autom8 – Tableau Trigger',
     name: 'autom8TableauTrigger',
-    icon: { light: 'file:../../icons/autom8.svg', dark: 'file:../../icons/autom8.svg' },
+    icon: { light: 'file:../../icons/autom8-light.svg', dark: 'file:../../icons/autom8-dark.svg' },
     group: ['trigger'],
     version: 1,
     description:
       'Receives data from the Autom8 Tableau dashboard extension, and gets it ready for downstream processing.',
+    usableAsTool: undefined,
 
     // ── Defaults ──────────────────────────────────────────────────────────
     defaults: {
@@ -208,12 +210,20 @@ export class Autom8TableauTrigger implements INodeType {
         default: {},
         options: [
           {
+            displayName: 'Include Metadata',
+            name: 'includeMetadata',
+            type: 'boolean',
+            default: false,
+            description:
+              'Whether to add the request metadata (dashboard_name, dashboard_id, timestamp, user) as fields on every output item',
+          },
+          {
             displayName: 'Pass Through Raw Body',
             name: 'passThroughRaw',
             type: 'boolean',
             default: false,
             description:
-              'Whether to attach the full, unmodified request body as a `_raw` key on every output item — useful for debugging.',
+              'Whether to output the full, unmodified request body as a single item instead of the processed rows — useful for debugging',
           },
         ],
       },
@@ -226,9 +236,11 @@ export class Autom8TableauTrigger implements INodeType {
     const responseMode = this.getNodeParameter('responseMode', 'onReceived') as string;
     const authentication = this.getNodeParameter('authentication', 'none') as string;
     const options = this.getNodeParameter('options', {}) as {
+      includeMetadata?: boolean;
       passThroughRaw?: boolean;
     };
 
+    const includeMetadata = options.includeMetadata === true;
     const passThroughRaw = options.passThroughRaw === true;
  
     // ── 1. Authenticate ───────────────────────────────────────────────────
@@ -249,22 +261,31 @@ export class Autom8TableauTrigger implements INodeType {
     try {
       payload = req.body as TableauPayload;
       if (!payload || typeof payload.data !== 'object' || payload.data === null) {
-        throw new Error('Missing or invalid "data" key in request body.');
+        throw new NodeOperationError(this.getNode(), 'Missing or invalid "data" key in request body.');
       }
     } catch (err) {
       throw new NodeOperationError(
         this.getNode(),
-        'Autom8 Tableau Trigger: could not parse request body.',
+        `Autom8 Tableau Trigger: could not parse request body. ${  (err instanceof Error ? err.message : 'Unknown error')}`,
       );
     }
  
-    const additionalData: IDataObject = {};
-    for (const [key, value] of Object.entries(payload.additional_data ?? {})) {
-      additionalData[toSnakeCase(key)] = value as IDataObject;
+    if (passThroughRaw) {
+      return { workflowData: [[{ json: payload as unknown as IDataObject }]] };
     }
 
-    const rawBody = passThroughRaw ? (payload as unknown as IDataObject) : undefined;
- 
+    const metadataFields: IDataObject = {};
+    if (includeMetadata) {
+      for (const [key, value] of Object.entries(payload.metadata ?? {})) {
+        metadataFields[toSnakeCase(key)] = value as unknown as IDataObject;
+      }
+    }
+
+    const additionalData: IDataObject = {};
+    for (const [key, value] of Object.entries(payload.additional_data ?? {})) {
+      additionalData[toSnakeCase(key)] = value as unknown as IDataObject;
+    }
+
     // ── 3. Normalise & iterate rows ───────────────────────────────────────
     // All payload formats (all-sheets, selected-marks, specific-sheet) send a
     // flat TableauRow[] where each row includes a worksheet_name column.
@@ -279,11 +300,7 @@ export class Autom8TableauTrigger implements INodeType {
         shaped[toSnakeCase(rawKey)] = value as IDataObject;
       }
 
-      Object.assign(shaped, additionalData);
-
-      if (rawBody) {
-        shaped['_raw'] = rawBody;
-      }
+      Object.assign(shaped, metadataFields, additionalData);
 
       outputItems.push({ json: shaped });
     }

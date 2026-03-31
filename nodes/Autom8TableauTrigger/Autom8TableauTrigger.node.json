@@ -4,7 +4,11 @@
 	"codexVersion": "1.0",
 	"categories": ["Miscellaneous"],
 	"resources": {
-		"credentialDocumentation": [],
+		"credentialDocumentation": [
+			{
+				"url": "https://biztory.atlassian.net/wiki/spaces/A8/pages/1122336771/Authentication"
+			}
+		],
 		"primaryDocumentation": [
 			{
 				"url": "https://github.com/biztory/n8n-nodes-autom8?tab=readme-ov-file"
