@@ -1,11 +1,15 @@
 {
 	"name": "n8n-nodes-autom8-tableau",
-	"version": "0.2.0",
+	"version": "0.2.1",
 	"description": "With Autom8, Tableau dashboards can be made actionable seamlessly. Add the Tableau Extension to your dashboard, wire it up with the n8n node, and you're ready to use your dashboard's data in n8n however you wish!",
 	"license": "MIT",
 	"homepage": "https://www.biztory.com",
 	"keywords": [
-		"n8n-community-node-package", "tableau", "autom8", "trigger", "webhook"
+		"n8n-community-node-package",
+		"tableau",
+		"autom8",
+		"trigger",
+		"webhook"
 	],
 	"author": {
 		"name": "Timothy Vermeiren (Biztory)",
