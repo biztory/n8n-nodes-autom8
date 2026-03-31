@@ -70,6 +70,19 @@ export class Autom8TableauTrigger implements INodeType {
       name: 'Autom8 – Tableau Trigger',
     },
 
+    // ── Credentials ───────────────────────────────────────────────────────
+    credentials: [
+      {
+        name: 'autom8TableauBearerApi',
+        required: true,
+        displayOptions: {
+          show: {
+            authentication: ['bearerToken'],
+          },
+        },
+      },
+    ],
+
     // ── Webhook setup ─────────────────────────────────────────────────────
     inputs: [],
     outputs: ['main'],
@@ -86,6 +99,24 @@ export class Autom8TableauTrigger implements INodeType {
  
     // ── User-facing parameters ────────────────────────────────────────────
     properties: [
+      {
+        displayName: 'Authentication',
+        name: 'authentication',
+        type: 'options',
+        options: [
+          {
+            name: 'None',
+            value: 'none',
+          },
+          {
+            name: 'Bearer Token',
+            value: 'bearerToken',
+          },
+        ],
+        default: 'none',
+        description: 'Whether to require a Bearer token on incoming requests',
+      },
+
       {
         displayName: 'Webhook Path',
         name: 'path',
@@ -193,13 +224,27 @@ export class Autom8TableauTrigger implements INodeType {
   async webhook(this: IWebhookFunctions): Promise<IWebhookResponseData> {
     const req = this.getRequestObject();
     const responseMode = this.getNodeParameter('responseMode', 'onReceived') as string;
+    const authentication = this.getNodeParameter('authentication', 'none') as string;
     const options = this.getNodeParameter('options', {}) as {
       passThroughRaw?: boolean;
     };
 
     const passThroughRaw = options.passThroughRaw === true;
  
-    // ── 1. Parse & validate the incoming body ──────────────────────────────
+    // ── 1. Authenticate ───────────────────────────────────────────────────
+    if (authentication === 'bearerToken') {
+      const credentials = await this.getCredentials<{ token: string }>('autom8TableauBearerApi');
+      const authHeader = (req.headers['authorization'] as string) ?? '';
+      const incomingToken = authHeader.startsWith('Bearer ') ? authHeader.slice(7) : '';
+
+      if (!incomingToken || incomingToken !== credentials.token) {
+        const res = this.getResponseObject();
+        res.status(401).json({ message: 'Unauthorized' });
+        return { noWebhookResponse: true };
+      }
+    }
+
+    // ── 2. Parse & validate the incoming body ──────────────────────────────
     let payload: TableauPayload;
     try {
       payload = req.body as TableauPayload;
@@ -220,7 +265,7 @@ export class Autom8TableauTrigger implements INodeType {
 
     const rawBody = passThroughRaw ? (payload as unknown as IDataObject) : undefined;
  
-    // ── 2. Normalise & iterate rows ───────────────────────────────────────
+    // ── 3. Normalise & iterate rows ───────────────────────────────────────
     // All payload formats (all-sheets, selected-marks, specific-sheet) send a
     // flat TableauRow[] where each row includes a worksheet_name column.
     const flatRows: TableauRow[] = payload.data;
@@ -243,7 +288,7 @@ export class Autom8TableauTrigger implements INodeType {
       outputItems.push({ json: shaped });
     }
  
-    // ── 3. Return the right shape depending on response mode ───────────────
+    // ── 4. Return the right shape depending on response mode ───────────────
     // - 'onReceived':   n8n replies immediately; workflowData triggers the workflow.
     // - 'lastNode':     n8n waits for the workflow to finish, sends last node output.
     // - 'responseNode': a downstream "Respond to Webhook" node sends the reply;
