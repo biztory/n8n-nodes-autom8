@@ -35,6 +35,8 @@ Use the Autom8 node to wire up your Tableau dashboard to an n8n workflow. Do thi
 1. This value determines the **URL for the webhook**. To view it, open the "Webhook URLs section" at the top of the node configuration area, under Parameters.
 1. Copy and paste this value into the **Autom8 Extension** in Tableau. Depending on whether you are developing the workflow from scratch or putting it in production, opt for either the Test URL or the Production URL of the webhook.
 
+For a more thorough introduction on how to use Autom8, consult the [Getting Started page](https://biztory.atlassian.net/wiki/spaces/A8/pages/1123090433/Getting+Started).
+
 _New to n8n? [Try it out](https://docs.n8n.io/try-it-out/) to get started and learn the basics._
 
 ## Resources
