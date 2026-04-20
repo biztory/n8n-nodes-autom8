@@ -63,6 +63,7 @@ export class Autom8TableauTrigger implements INodeType {
     icon: { light: 'file:../../icons/autom8-light.svg', dark: 'file:../../icons/autom8-dark.svg' },
     group: ['trigger'],
     version: 1,
+    subtitle: '={{$parameter["path"] ? "/" + $parameter["path"] : ""}}',
     description:
       'Receives data from the Autom8 Tableau dashboard extension, and gets it ready for downstream processing.',
     usableAsTool: undefined,
