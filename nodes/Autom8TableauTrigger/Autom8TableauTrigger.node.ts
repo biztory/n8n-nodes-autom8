@@ -83,6 +83,7 @@ export class Autom8TableauTrigger implements INodeType {
             authentication: ['bearerToken'],
           },
         },
+        testedBy: 'autom8TableauTrigger',
       },
     ],
 
