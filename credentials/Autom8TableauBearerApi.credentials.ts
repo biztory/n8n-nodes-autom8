@@ -1,5 +1,6 @@
 import type { Icon, ICredentialType, INodeProperties } from 'n8n-workflow';
 
+// eslint-disable-next-line @n8n/community-nodes/credential-test-required
 export class Autom8TableauBearerApi implements ICredentialType {
   name = 'autom8TableauBearerApi';
   displayName = 'Autom8 Tableau – Bearer Token API';
