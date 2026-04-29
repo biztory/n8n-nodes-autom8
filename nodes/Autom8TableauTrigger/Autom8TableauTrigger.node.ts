@@ -58,7 +58,7 @@ interface TableauPayload {
 export class Autom8TableauTrigger implements INodeType {
   description: INodeTypeDescription = {
     // ── Identity ─────────────────────────────────────────────────────────
-    displayName: 'Autom8 – Data Action',
+    displayName: 'Autom8 – Data Action Trigger',
     name: 'autom8TableauTrigger',
     icon: { light: 'file:../../icons/autom8-light.svg', dark: 'file:../../icons/autom8-dark.svg' },
     group: ['trigger'],

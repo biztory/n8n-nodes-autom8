@@ -28,7 +28,7 @@ function compare(a: number, operator: ComparisonOperator, b: number): boolean {
 
 export class Autom8DataAlert implements INodeType {
 	description: INodeTypeDescription = {
-		displayName: 'Autom8 – Data Alert',
+		displayName: 'Autom8 – Data Alert Trigger',
 		name: 'autom8DataAlert',
 		icon: {
 			light: 'file:../../icons/autom8-light.svg',
@@ -41,7 +41,7 @@ export class Autom8DataAlert implements INodeType {
 			'Monitors data in a Tableau view or datasource on a schedule and fires when a condition is met.',
 		usableAsTool: true,
 		defaults: {
-			name: 'Autom8 – Data Alert',
+			name: 'Autom8 – Data Alert Trigger',
 		},
 		polling: true,
 		inputs: [],
