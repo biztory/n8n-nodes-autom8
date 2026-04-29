@@ -58,7 +58,7 @@ interface TableauPayload {
 export class Autom8TableauTrigger implements INodeType {
   description: INodeTypeDescription = {
     // ── Identity ─────────────────────────────────────────────────────────
-    displayName: 'Autom8 – Tableau Trigger',
+    displayName: 'Autom8 – Data Action',
     name: 'autom8TableauTrigger',
     icon: { light: 'file:../../icons/autom8-light.svg', dark: 'file:../../icons/autom8-dark.svg' },
     group: ['trigger'],
@@ -70,7 +70,7 @@ export class Autom8TableauTrigger implements INodeType {
 
     // ── Defaults ──────────────────────────────────────────────────────────
     defaults: {
-      name: 'Autom8 – Tableau Trigger',
+      name: 'Autom8 – Data Action',
     },
 
     // ── Credentials ───────────────────────────────────────────────────────
@@ -216,7 +216,7 @@ export class Autom8TableauTrigger implements INodeType {
     } catch (err) {
       throw new NodeOperationError(
         this.getNode(),
-        `Autom8 Tableau Trigger: could not parse request body. ${  (err instanceof Error ? err.message : 'Unknown error')}`,
+        `Autom8 Data Action: could not parse request body. ${  (err instanceof Error ? err.message : 'Unknown error')}`,
       );
     }
  

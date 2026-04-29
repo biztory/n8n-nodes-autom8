@@ -1,0 +1,18 @@
+{
+	"node": "n8n-nodes-autom8-tableau",
+	"nodeVersion": "1.0",
+	"codexVersion": "1.0",
+	"categories": ["Miscellaneous"],
+	"resources": {
+		"credentialDocumentation": [
+			{
+				"url": "https://help.tableau.com/current/online/en-us/connected_apps_direct.htm"
+			}
+		],
+		"primaryDocumentation": [
+			{
+				"url": "https://github.com/biztory/n8n-nodes-autom8?tab=readme-ov-file"
+			}
+		]
+	}
+}

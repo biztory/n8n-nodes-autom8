@@ -9,7 +9,9 @@
 		"tableau",
 		"autom8",
 		"trigger",
-		"webhook"
+		"webhook",
+		"data",
+		"data alert"
 	],
 	"author": {
 		"name": "Timothy Vermeiren (Biztory)",
@@ -35,10 +37,12 @@
 		"n8nNodesApiVersion": 1,
 		"strict": true,
 		"credentials": [
-			"dist/credentials/Autom8TableauBearerApi.credentials.js"
+			"dist/credentials/Autom8TableauBearerApi.credentials.js",
+			"dist/credentials/Autom8TableauConnectedAppApi.credentials.js"
 		],
 		"nodes": [
-			"dist/nodes/Autom8TableauTrigger/Autom8TableauTrigger.node.js"
+			"dist/nodes/Autom8TableauTrigger/Autom8TableauTrigger.node.js",
+			"dist/nodes/Autom8DataAlert/Autom8DataAlert.node.js"
 		]
 	},
 	"devDependencies": {
