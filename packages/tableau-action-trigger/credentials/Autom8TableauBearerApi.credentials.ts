@@ -4,7 +4,7 @@ import type { Icon, ICredentialType, INodeProperties } from 'n8n-workflow';
 export class Autom8TableauBearerApi implements ICredentialType {
   name = 'autom8TableauBearerApi';
   displayName = 'Autom8 Tableau – Bearer Token API';
-  icon: Icon = { light: 'file:../icons/autom8-light.svg', dark: 'file:../icons/autom8-dark.svg' };
+  icon: Icon = { light: 'file:../icons/autom8-action-light.svg', dark: 'file:../icons/autom8-action-dark.svg' };
   documentationUrl = "https://biztory.atlassian.net/wiki/spaces/A8/pages/1122336771/Authentication";
   properties: INodeProperties[] = [
     {

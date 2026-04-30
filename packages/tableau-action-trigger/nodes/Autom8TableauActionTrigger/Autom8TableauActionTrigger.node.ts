@@ -5,6 +5,7 @@ import {
   IWebhookResponseData,
   INodeExecutionData,
   IDataObject,
+  NodeConnectionTypes,
   NodeOperationError,
 } from 'n8n-workflow';
 
@@ -55,12 +56,12 @@ interface TableauPayload {
 // ---------------------------------------------------------------------------
 // Node definition
 // ---------------------------------------------------------------------------
-export class Autom8TableauTrigger implements INodeType {
+export class Autom8TableauActionTrigger implements INodeType {
   description: INodeTypeDescription = {
     // ── Identity ─────────────────────────────────────────────────────────
-    displayName: 'Autom8 – Data Action Trigger',
-    name: 'autom8TableauTrigger',
-    icon: { light: 'file:../../icons/autom8-light.svg', dark: 'file:../../icons/autom8-dark.svg' },
+    displayName: 'Autom8 Tableau - Data Action Trigger',
+    name: 'autom8TableauActionTrigger',
+    icon: { light: 'file:../../icons/autom8-action-light.svg', dark: 'file:../../icons/autom8-action-dark.svg' },
     group: ['trigger'],
     version: 1,
     subtitle: '={{$parameter["path"] ? "/" + $parameter["path"] : ""}}',
@@ -70,7 +71,7 @@ export class Autom8TableauTrigger implements INodeType {
 
     // ── Defaults ──────────────────────────────────────────────────────────
     defaults: {
-      name: 'Autom8 – Data Action',
+      name: 'Autom8 Tableau - Data Action Trigger',
     },
 
     // ── Credentials ───────────────────────────────────────────────────────
@@ -88,7 +89,7 @@ export class Autom8TableauTrigger implements INodeType {
 
     // ── Webhook setup ─────────────────────────────────────────────────────
     inputs: [],
-    outputs: ['main'],
+    outputs: [NodeConnectionTypes.Main],
     webhooks: [
       {
         name: 'default',
@@ -108,12 +109,12 @@ export class Autom8TableauTrigger implements INodeType {
         type: 'options',
         options: [
           {
-            name: 'None',
-            value: 'none',
-          },
-          {
             name: 'Bearer Token',
             value: 'bearerToken',
+          },
+          {
+            name: 'None',
+            value: 'none',
           },
         ],
         default: 'none',
@@ -216,7 +217,7 @@ export class Autom8TableauTrigger implements INodeType {
     } catch (err) {
       throw new NodeOperationError(
         this.getNode(),
-        `Autom8 Data Action: could not parse request body. ${  (err instanceof Error ? err.message : 'Unknown error')}`,
+        `Autom8 Data Action (Tableau): could not parse request body. ${  (err instanceof Error ? err.message : 'Unknown error')}`,
       );
     }
  

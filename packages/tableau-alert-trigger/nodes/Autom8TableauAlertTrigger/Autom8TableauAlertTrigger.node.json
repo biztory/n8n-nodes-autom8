@@ -1,5 +1,5 @@
 {
-	"node": "n8n-nodes-autom8-tableau",
+	"node": "n8n-nodes-autom8-tableau-alert-trigger",
 	"nodeVersion": "1.0",
 	"codexVersion": "1.0",
 	"categories": ["Miscellaneous"],

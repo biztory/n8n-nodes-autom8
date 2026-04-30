@@ -181,7 +181,7 @@ export class Autom8TableauConnectedAppApi implements ICredentialType {
 			type: 'string',
 			default: 'tableau:content:read,tableau:views:download,tableau:viz_data_service:read',
 			description:
-				'Comma-separated list of scopes for the JWT. Must cover the data access the Data Alert node performs.',
+				'Comma-separated list of scopes for the JWT. Must cover the data access the Alert Trigger node performs.',
 		},
 	];
 }

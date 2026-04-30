@@ -4,6 +4,7 @@ import {
 	INodeTypeDescription,
 	INodeExecutionData,
 	IDataObject,
+	NodeConnectionTypes,
 	NodeOperationError,
 } from 'n8n-workflow';
 import {
@@ -26,13 +27,13 @@ function compare(a: number, operator: ComparisonOperator, b: number): boolean {
 	}
 }
 
-export class Autom8DataAlert implements INodeType {
+export class Autom8TableauAlertTrigger implements INodeType {
 	description: INodeTypeDescription = {
-		displayName: 'Autom8 – Data Alert Trigger',
-		name: 'autom8DataAlert',
+		displayName: 'Autom8 Tableau - Data Alert Trigger',
+		name: 'autom8TableauAlertTrigger',
 		icon: {
-			light: 'file:../../icons/autom8-light.svg',
-			dark: 'file:../../icons/autom8-dark.svg',
+			light: 'file:../../icons/autom8-alert-light.svg',
+			dark: 'file:../../icons/autom8-alert-dark.svg',
 		},
 		group: ['trigger'],
 		version: 1,
@@ -41,11 +42,11 @@ export class Autom8DataAlert implements INodeType {
 			'Monitors data in a Tableau view or datasource on a schedule and fires when a condition is met.',
 		usableAsTool: true,
 		defaults: {
-			name: 'Autom8 – Data Alert Trigger',
+			name: 'Autom8 Tableau - Data Alert Trigger',
 		},
 		polling: true,
 		inputs: [],
-		outputs: ['main'],
+		outputs: [NodeConnectionTypes.Main],
 		credentials: [
 			{
 				name: 'autom8TableauConnectedAppApi',
@@ -61,15 +62,15 @@ export class Autom8DataAlert implements INodeType {
 				noDataExpression: true,
 				options: [
 					{
-						name: 'View',
-						value: 'view',
-						description: 'Query the CSV data exposed by a Tableau view',
-					},
-					{
 						name: 'Datasource (VizQL)',
 						value: 'datasource',
 						description:
 							'Query a published datasource via the VizQL Data Service',
+					},
+					{
+						name: 'View',
+						value: 'view',
+						description: 'Query the CSV data exposed by a Tableau view',
 					},
 				],
 				default: 'view',
@@ -252,7 +253,7 @@ export class Autom8DataAlert implements INodeType {
 		} catch (err) {
 			throw new NodeOperationError(
 				this.getNode(),
-				`Autom8 Data Alert: failed to fetch data from Tableau. ${
+				`Autom8 Data Alert (Tableau): failed to fetch data from Tableau. ${
 					err instanceof Error ? err.message : 'Unknown error'
 				}`,
 			);

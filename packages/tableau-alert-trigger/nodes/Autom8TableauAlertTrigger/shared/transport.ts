@@ -2,7 +2,7 @@ import { createHmac, randomUUID } from 'crypto';
 import type { IDataObject, IHttpRequestOptions } from 'n8n-workflow';
 import type { TableauAuthToken, TableauCredentials, TableauRequestContext } from './types';
 
-const TABLEAU_AUTH_CACHE_KEY = 'autom8DataAlertTableauAuth';
+const TABLEAU_AUTH_CACHE_KEY = 'autom8TableauAlertTriggerAuth';
 const TOKEN_EXPIRY_BUFFER_MINUTES = 10;
 const TOKEN_LIFETIME_MINUTES = 240;
 

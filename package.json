@@ -1,18 +1,10 @@
 {
-	"name": "@biztory/n8n-nodes-autom8-tableau",
-	"version": "0.3.0",
-	"description": "With Autom8, Tableau dashboards can be made actionable seamlessly. Add the Tableau Extension to your dashboard, wire it up with the n8n node, and you're ready to use your dashboard's data in n8n, however you wish.",
+	"name": "n8n-nodes-autom8-monorepo",
+	"version": "0.0.0",
+	"private": true,
+	"description": "Monorepo for the @biztory/n8n-nodes-autom8-* family of n8n community nodes.",
 	"license": "MIT",
 	"homepage": "https://www.biztory.com",
-	"keywords": [
-		"n8n-community-node-package",
-		"tableau",
-		"autom8",
-		"trigger",
-		"webhook",
-		"data",
-		"data alert"
-	],
 	"author": {
 		"name": "Timothy Vermeiren (Biztory)",
 		"email": "timothy.vermeiren@biztory.com"
@@ -21,29 +13,13 @@
 		"type": "git",
 		"url": "https://github.com/biztory/n8n-nodes-autom8.git"
 	},
-	"scripts": {
-		"build": "n8n-node build",
-		"build:watch": "tsc --watch",
-		"dev": "n8n-node dev",
-		"lint": "n8n-node lint",
-		"lint:fix": "n8n-node lint --fix",
-		"release": "n8n-node release",
-		"prepublishOnly": "n8n-node prerelease"
-	},
-	"files": [
-		"dist"
+	"workspaces": [
+		"packages/*"
 	],
-	"n8n": {
-		"n8nNodesApiVersion": 1,
-		"strict": true,
-		"credentials": [
-			"dist/credentials/Autom8TableauBearerApi.credentials.js",
-			"dist/credentials/Autom8TableauConnectedAppApi.credentials.js"
-		],
-		"nodes": [
-			"dist/nodes/Autom8TableauTrigger/Autom8TableauTrigger.node.js",
-			"dist/nodes/Autom8DataAlert/Autom8DataAlert.node.js"
-		]
+	"scripts": {
+		"build": "npm run build --workspaces",
+		"lint": "npm run lint --workspaces",
+		"lint:fix": "npm run lint:fix --workspaces"
 	},
 	"devDependencies": {
 		"@n8n/node-cli": "*",
@@ -51,8 +27,5 @@
 		"prettier": "3.8.1",
 		"release-it": "19.2.4",
 		"typescript": "5.9.3"
-	},
-	"peerDependencies": {
-		"n8n-workflow": "*"
 	}
 }
