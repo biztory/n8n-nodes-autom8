@@ -1,0 +1,40 @@
+name: Mirror Sub-packages
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+        # Only run when files in these specific folders change
+      - 'packages/**'
+
+jobs:
+  mirror_action_trigger:
+    if: contains(github.event.head_commit.modified, 'packages/tableau-action-trigger')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Push Action Trigger
+        uses: newrelic/git-subtree-action@main
+        with:
+          repo: 'biztory/n8n-nodes-autom8-tableau-action-trigger'
+          column: 'packages/tableau-action-trigger'
+          branch: 'main'
+          token: ${{ secrets.SYNC_TOKEN }}
+
+  mirror_alert_trigger:
+    if: contains(github.event.head_commit.modified, 'packages/tableau-alert-trigger')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Push Alert Trigger
+        uses: newrelic/git-subtree-action@main
+        with:
+          repo: 'biztory/n8n-nodes-autom8-tableau-alert-trigger'
+          column: 'packages/tableau-alert-trigger'
+          branch: 'main'
+          token: ${{ secrets.SYNC_TOKEN }}

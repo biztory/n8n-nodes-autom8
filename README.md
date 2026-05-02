@@ -45,6 +45,13 @@ npm run dev
 
 `n8n-node` operates on the package's `cwd`, so all of its commands (`build`, `dev`, `lint`, `release`, `prerelease`) work from inside a package directory or via the `-w <package>` workspace flag.
 
+## GitHub Repositories
+
+This is a monorepo that is mirrored to two other repositories when contents of `packages/**` are updated. Relevant assets:
+* Other repository 1: https://github.com/biztory/n8n-nodes-autom8-tableau-action-trigger
+* Other repository 2: https://github.com/biztory/n8n-nodes-autom8-tableau-alert-trigger
+* Workflow: [mirror.yml](.github/workflows/mirror.yml)
+
 ## Releasing
 
 Each package versions and publishes independently. Releases are kicked off locally and finished by GitHub Actions:
