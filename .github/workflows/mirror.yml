@@ -17,12 +17,8 @@ jobs:
         with:
           fetch-depth: 0
       - name: Push Action Trigger
-        uses: newrelic/git-subtree-action@main
-        with:
-          repo: 'biztory/n8n-nodes-autom8-tableau-action-trigger'
-          column: 'packages/tableau-action-trigger'
-          branch: 'master'
-          token: ${{ secrets.SYNC_TOKEN }}
+        run: |
+          git subtree push --prefix packages/tableau-action-trigger https://x-access-token:${{ secrets.SYNC_TOKEN }}@github.com/biztory/n8n-nodes-autom8-tableau-action-trigger.git master
 
   mirror_alert_trigger:
     runs-on: ubuntu-latest
@@ -31,9 +27,5 @@ jobs:
         with:
           fetch-depth: 0
       - name: Push Alert Trigger
-        uses: newrelic/git-subtree-action@main
-        with:
-          repo: 'biztory/n8n-nodes-autom8-tableau-alert-trigger'
-          column: 'packages/tableau-alert-trigger'
-          branch: 'master'
-          token: ${{ secrets.SYNC_TOKEN }}
+        run: |
+          git subtree push --prefix packages/tableau-alert-trigger https://x-access-token:${{ secrets.SYNC_TOKEN }}@github.com/biztory/n8n-nodes-autom8-tableau-alert-trigger.git master
