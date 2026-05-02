@@ -3,7 +3,7 @@ name: Mirror Sub-packages
 on:
   push:
     branches:
-      - main
+      - master
     paths:
         # Only run when files in these specific folders change
       - 'packages/**'
@@ -21,7 +21,7 @@ jobs:
         with:
           repo: 'biztory/n8n-nodes-autom8-tableau-action-trigger'
           column: 'packages/tableau-action-trigger'
-          branch: 'main'
+          branch: 'master'
           token: ${{ secrets.SYNC_TOKEN }}
 
   mirror_alert_trigger:
@@ -36,5 +36,5 @@ jobs:
         with:
           repo: 'biztory/n8n-nodes-autom8-tableau-alert-trigger'
           column: 'packages/tableau-alert-trigger'
-          branch: 'main'
+          branch: 'master'
           token: ${{ secrets.SYNC_TOKEN }}
