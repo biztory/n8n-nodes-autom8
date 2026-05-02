@@ -19,6 +19,8 @@ jobs:
       - name: Push Action Trigger
         run: |
           git subtree push --prefix packages/tableau-action-trigger https://x-access-token:${{ secrets.SYNC_TOKEN }}@github.com/biztory/n8n-nodes-autom8-tableau-action-trigger.git master
+    permissions:
+      contents: write
 
   mirror_alert_trigger:
     runs-on: ubuntu-latest
@@ -29,3 +31,5 @@ jobs:
       - name: Push Alert Trigger
         run: |
           git subtree push --prefix packages/tableau-alert-trigger https://x-access-token:${{ secrets.SYNC_TOKEN }}@github.com/biztory/n8n-nodes-autom8-tableau-alert-trigger.git master
+    permissions:
+      contents: write
