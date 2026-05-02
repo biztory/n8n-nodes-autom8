@@ -10,7 +10,6 @@ on:
 
 jobs:
   mirror_action_trigger:
-    if: contains(github.event.head_commit.modified, 'packages/tableau-action-trigger')
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -25,7 +24,6 @@ jobs:
           token: ${{ secrets.SYNC_TOKEN }}
 
   mirror_alert_trigger:
-    if: contains(github.event.head_commit.modified, 'packages/tableau-alert-trigger')
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
